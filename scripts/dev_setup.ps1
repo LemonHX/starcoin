@@ -24,9 +24,13 @@ param(
 
 [Parameter()]
 [Alias('dir')]
-[string]$INSTALL_DIR="${HOME}\.starcoin_deps"
+[string]$INSTALL_DIR
 )
 
+if ($INSTALL_DIR == null) {
+    Write-Host "Install Directory is set as $env:USERPROFILE\.starcoin"  -ForegroundColor Green
+    $INSTALL_DIR = "$($env:USERPROFILE)\.starcoin_deps"
+}
 
 
 $Z3_VERSION="4.8.13"
@@ -62,6 +66,7 @@ function set_env_path {
     check_set_env "Z3_EXE" "$INSTALL_DIR\z3\z3.exe"
     check_set_env "CVC5_EXE" "$INSTALL_DIR\cvc5.exe"
     check_set_env "BOOGIE_EXE" "$INSTALL_DIR\tools\boogie\"
+    git config --global core.autocrlf input
 }
 
 function install_z3 {
